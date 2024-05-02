@@ -18,7 +18,7 @@ class Scanner(Thread):
             index=1,
             step=1,
             exit_pred: Predicate=Predicate.MAX_YEAR,
-            exit_val: int=2023,
+            exit_val: int=2022,
             **kwargs
         ):
 
@@ -53,7 +53,6 @@ class Scanner(Thread):
         self.sites_visited += 1
         self.index += self.step
         await self.driver.goto(self.site + "?p=" + str(self.index))
-        asyncio.sleep(2)
 
     async def scrape(self):
         products = await self.driver.query_selector_all('xpath=.//div[contains(@class, "product")]')
