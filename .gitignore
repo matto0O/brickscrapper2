@@ -1,0 +1,6 @@
+/.env
+*.xlsx
+test.py
+__pycache__/
+.venv/
+.env
