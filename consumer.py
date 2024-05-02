@@ -59,18 +59,24 @@ class Consumer(Thread):
         await self.driver.goto(f"https://www.olx.pl/oferty/q-LEGO-{catalog_no}/?search%5Border%5D=filter_float_price:asc&search[filter_enum_state][0]=new")
         total_count = await self.driver.query_selector('span[data-testid="total-count"]')
         if total_count is None:
-            return "Brak ogłoszeń"
+            return "Brak ogłoszeń", "Brak drugiego ogłoszenia"
         
         tc_text = await total_count.text_content()
         tc_number = int(re.findall(r'\d+', tc_text)[0])
 
         if not tc_number:
-            return "Brak ogłoszeń" 
+            return "Brak ogłoszeń", "Brak drugiego ogłoszenia"
         
-        price_element = await self.driver.query_selector('p[data-testid="ad-price"]')
-        price_text = await price_element.text_content()
+        price_elements = await self.driver.query_selector_all('p[data-testid="ad-price"]')
+        best = price_elements[0]
+        price_text = await best.text_content()
         price = float(price_text.split(" ")[0].replace(",", "."))
-        return price
+        if len(price_elements) > 1:
+            second_best = price_elements[1]
+            price_text2 = await second_best.text_content()
+            price2 = float(price_text.split(" ")[0].replace(",", "."))
+            return price, price2
+        return price, "Brak drugiego ogłoszenia"
 
     
     async def magic(self):
@@ -99,7 +105,7 @@ class Consumer(Thread):
 
                 roi = round(100 * (avg - price) / price, 2)
                     
-                min_olx = await self._check_olx(catalog_no)
+                olx1, olx2 = await self._check_olx(catalog_no)
 
                 # if roi >= self.threshold:
                 # total_bricks = int(await bold[1].text_content())
@@ -109,7 +115,7 @@ class Consumer(Thread):
                 columns = {"Numer zestawu": catalog_no, "Nazwa": name,
                     # "Łączna liczba klocków": total_bricks, "Liczba unikalnych klocków": unique_bricks, "Cena/unikatowy klocek":price_per_unique, 
                     "Part Out Value": round(avg, 2), "Zysk %": roi,
-                    "Minimalna promoklocki": price, "Minimalna olx": min_olx #"Minimalna Allegro": min_allegro,
+                    "Minimalna promoklocki": price, "Minimalna olx": olx1, "Druga najlepsza olx": olx2 #"Minimalna Allegro": min_allegro,
                     }
                 
                 self.results.append(columns)

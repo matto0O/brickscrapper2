@@ -8,15 +8,15 @@ import asyncio
 LOGIN, PASSWORD = get_credentials()
 FILENAME = generate_filename() 
 CURRENCY_RATE = get_currency_rate("usd")
-CONSUMER_THREADS = 3
+CONSUMER_THREADS = 1
 SCANNING_THREADS = 1
-PROFIT_THRESHOLD = 50
+PROFIT_THRESHOLD = 50 #irrelevant
 
 def start_scanners(scanners: list):
     for i in range(SCANNING_THREADS):
         scanner = Scanner(
             exit_pred=Predicate.PAGE_AMOUNT,
-            exit_val=15,
+            exit_val=3,
             step=SCANNING_THREADS,
             index=i+1,
             headless=False,
