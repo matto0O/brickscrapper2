@@ -18,7 +18,7 @@ class Scanner(Thread):
             index=1,
             step=1,
             exit_pred: Predicate=Predicate.MAX_YEAR,
-            exit_val: int=2022,
+            exit_val: int=2024,
             **kwargs
         ):
 
