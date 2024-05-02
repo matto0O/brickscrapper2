@@ -16,7 +16,7 @@ def start_scanners(scanners: list):
     for i in range(SCANNING_THREADS):
         scanner = Scanner(
             exit_pred=Predicate.MAX_YEAR,
-            exit_val=2024,
+            exit_val=2022,
             step=SCANNING_THREADS,
             index=i+1,
             headless=False,
