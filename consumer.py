@@ -74,7 +74,7 @@ class Consumer(Thread):
         if len(price_elements) > 1:
             second_best = price_elements[1]
             price_text2 = await second_best.text_content()
-            price2 = float(price_text.split(" ")[0].replace(",", "."))
+            price2 = float(price_text2.split(" ")[0].replace(",", "."))
             return price, price2
         return price, "Brak drugiego ogłoszenia"
 
