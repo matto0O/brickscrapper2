@@ -97,23 +97,22 @@ class Consumer(Thread):
                 except:
                     continue
 
+                roi = round(100 * (avg - price) / price, 2)
+                    
+                min_olx = await self._check_olx(catalog_no)
+
+                # if roi >= self.threshold:
                 total_bricks = int(await bold[1].text_content())
                 unique_bricks = int(await bold[2].text_content())
+                price_per_unique = round(price / float(unique_bricks), 2)
 
-                roi = round(100 * (avg - price) / price, 2)
-                min_olx = await self._check_olx(catalog_no)
-                if min_olx is float and min_olx < price:
-                    roi = round(100 * (avg - min_olx) / min_olx, 2)
-
-                if roi >= self.threshold:
-                    price_per_unique = round(price / float(unique_bricks), 2)
-
-                    columns = {"Numer zestawu": catalog_no, "Nazwa": name,
-                        "Łączna liczba klocków": total_bricks, "Liczba unikalnych klocków": unique_bricks, "Cena/unikatowy klocek":price_per_unique, 
-                        "Minimalna promoklocki": price, "Minimalna olx": min_olx, #"Minimalna Allegro": min_allegro,
-                        "Part Out Value": round(avg, 2), "Zysk %": roi}
-                    
-                    self.results.append(columns)
+                columns = {"Numer zestawu": catalog_no, "Nazwa": name,
+                    "Łączna liczba klocków": total_bricks, "Liczba unikalnych klocków": unique_bricks, "Cena/unikatowy klocek":price_per_unique, 
+                    "Part Out Value": round(avg, 2), "Zysk %": roi,
+                    "Minimalna promoklocki": price, "Minimalna olx": min_olx #"Minimalna Allegro": min_allegro,
+                    }
+                
+                self.results.append(columns)
 
     def run(self):
         loop = asyncio.new_event_loop()
