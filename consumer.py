@@ -105,7 +105,7 @@ class Consumer(Thread):
 
                 roi = round(100 * (avg - price) / price, 2)
                     
-                olx = await self._check_olx(catalog_no)
+                olx = await self._check_olx(catalog_no, price)
 
                 # if roi >= self.threshold:
                 # total_bricks = int(await bold[1].text_content())

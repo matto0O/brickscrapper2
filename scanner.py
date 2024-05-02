@@ -53,7 +53,7 @@ class Scanner(Thread):
         self.sites_visited += 1
         self.index += self.step
         await self.driver.goto(self.site + "?p=" + str(self.index))
-        asyncio.sleep(1)
+        asyncio.sleep(2)
 
     async def scrape(self):
         products = await self.driver.query_selector_all('xpath=.//div[contains(@class, "product")]')
