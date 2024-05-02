@@ -75,6 +75,8 @@ class Scanner(Thread):
         return time() - self.birth > self.exit_val
     
     def _passed_max_year(self) -> bool:
+        if not self.results:
+            return False
         return self.results[-1]["year"] < self.exit_val
     
     def _hit_page_limit(self) -> bool:

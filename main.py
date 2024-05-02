@@ -15,8 +15,8 @@ PROFIT_THRESHOLD = 50 #irrelevant
 def start_scanners(scanners: list):
     for i in range(SCANNING_THREADS):
         scanner = Scanner(
-            exit_pred=Predicate.PAGE_AMOUNT,
-            exit_val=3,
+            exit_pred=Predicate.MAX_YEAR,
+            exit_val=2024,
             step=SCANNING_THREADS,
             index=i+1,
             headless=False,
