@@ -102,12 +102,12 @@ class Consumer(Thread):
                 min_olx = await self._check_olx(catalog_no)
 
                 # if roi >= self.threshold:
-                total_bricks = int(await bold[1].text_content())
-                unique_bricks = int(await bold[2].text_content())
-                price_per_unique = round(price / float(unique_bricks), 2)
+                # total_bricks = int(await bold[1].text_content())
+                # unique_bricks = int(await bold[2].text_content())
+                # price_per_unique = round(price / float(unique_bricks), 2)
 
                 columns = {"Numer zestawu": catalog_no, "Nazwa": name,
-                    "Łączna liczba klocków": total_bricks, "Liczba unikalnych klocków": unique_bricks, "Cena/unikatowy klocek":price_per_unique, 
+                    # "Łączna liczba klocków": total_bricks, "Liczba unikalnych klocków": unique_bricks, "Cena/unikatowy klocek":price_per_unique, 
                     "Part Out Value": round(avg, 2), "Zysk %": roi,
                     "Minimalna promoklocki": price, "Minimalna olx": min_olx #"Minimalna Allegro": min_allegro,
                     }
