@@ -95,7 +95,6 @@ class Scanner(Thread):
         async with async_playwright() as playwright:
             client = await playwright.chromium.launch(**self.kwargs)
             self.driver = await client.new_page()
-            await self.driver.goto(self.site + "?p=" + str(self.index))
 
             while not predicate():
                 await self.scrape()
