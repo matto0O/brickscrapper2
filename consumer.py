@@ -68,15 +68,20 @@ class Consumer(Thread):
             return "Brak ogłoszeń"
         
         price_elements = await self.driver.query_selector_all('p[data-testid="ad-price"]')
+        # name_elements = await self.driver.query_selector_all('div[data-testid="l-card"]')
         price = 0
         i = 0
-        while price < 0.4 * promoklocki_price and i < len(price_elements):
+        while price < 0.3 * promoklocki_price and i < len(price_elements):
             best = price_elements[i]
             price_text = await best.text_content()
             price = float(price_text.split(" ")[0].replace(",", "."))
             if price > promoklocki_price:
                 return "Drozsze niż promoklocki"
+            # elem = await name_elements[i].query_selector('div/div/div[2]/div/a/h6')
+            # name = await elem.text_content()
             i += 1
+        if price < 0.3 * promoklocki_price:
+            return "Zbyt niska cena"
         return price
     
     async def magic(self):
@@ -107,6 +112,12 @@ class Consumer(Thread):
                     
                 olx = await self._check_olx(catalog_no, price)
 
+                if isinstance(olx, str):
+                    continue
+                # olx, title = olx
+                gain = price * 0.89 - float(olx) + 5
+                gain_percent = gain * 100 / (float(olx) + 5)
+
                 # if roi >= self.threshold:
                 # total_bricks = int(await bold[1].text_content())
                 # unique_bricks = int(await bold[2].text_content())
@@ -116,6 +127,8 @@ class Consumer(Thread):
                     # "Łączna liczba klocków": total_bricks, "Liczba unikalnych klocków": unique_bricks, "Cena/unikatowy klocek":price_per_unique, 
                     # "Part Out Value": round(avg, 2), "Zysk %": roi,
                     "Minimalna promoklocki": price, "Minimalna olx": olx, #"Minimalna Allegro": min_allegro,
+                    "Zysk nominalny": gain, "Zysk %": gain_percent,
+                    # "Ogłoszenie OLX": title,
                     }
                 
                 self.results.append(columns)
