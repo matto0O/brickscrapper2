@@ -93,17 +93,17 @@ class Consumer(Thread):
                 year = product["year"]
                 catalog_no = name.split(" - ")[0].split(" ")[-1]
 
-                bricklink = f"https://www.bricklink.com/catalogPOV.asp?itemType=S&itemNo={catalog_no}&itemSeq=1&itemQty=1&breakType=M&itemCondition=N&incInstr=Y&incParts=Y"
-                await self.driver.goto(bricklink)
+                # bricklink = f"https://www.bricklink.com/catalogPOV.asp?itemType=S&itemNo={catalog_no}&itemSeq=1&itemQty=1&breakType=M&itemCondition=N&incInstr=Y&incParts=Y"
+                # await self.driver.goto(bricklink)
                 
-                try:
-                    bold = await self.driver.query_selector_all('(//tr[last()]//td)[1]//p//b')
-                    boldText = await bold[0].text_content()
-                    avg = float(boldText.split(" ")[1][1:]) * self.exchange
-                except:
-                    continue
+                # try:
+                #     bold = await self.driver.query_selector_all('(//tr[last()]//td)[1]//p//b')
+                #     boldText = await bold[0].text_content()
+                #     avg = float(boldText.split(" ")[1][1:]) * self.exchange
+                # except:
+                #     continue
 
-                roi = round(100 * (avg - price) / price, 2)
+                # roi = round(100 * (avg - price) / price, 2)
                     
                 olx = await self._check_olx(catalog_no, price)
 
@@ -114,7 +114,7 @@ class Consumer(Thread):
 
                 columns = {"Numer zestawu": catalog_no, "Nazwa": name,
                     # "Łączna liczba klocków": total_bricks, "Liczba unikalnych klocków": unique_bricks, "Cena/unikatowy klocek":price_per_unique, 
-                    "Part Out Value": round(avg, 2), "Zysk %": roi,
+                    # "Part Out Value": round(avg, 2), "Zysk %": roi,
                     "Minimalna promoklocki": price, "Minimalna olx": olx, #"Minimalna Allegro": min_allegro,
                     }
                 
