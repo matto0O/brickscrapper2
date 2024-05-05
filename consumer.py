@@ -115,8 +115,9 @@ class Consumer(Thread):
                 if isinstance(olx, str):
                     continue
                 # olx, title = olx
-                gain = price * 0.89 - float(olx) + 5
-                gain_percent = gain * 100 / (float(olx) + 5)
+                olx_delivery = float(olx) - 5
+                gain = price * 0.89 - olx_delivery
+                gain_percent = gain * 100 / olx_delivery
 
                 # if roi >= self.threshold:
                 # total_bricks = int(await bold[1].text_content())
