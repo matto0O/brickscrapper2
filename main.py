@@ -5,18 +5,22 @@ from utils import *
 import asyncio
 
 # Description: Configuration file for the program
-LOGIN, PASSWORD = get_credentials()
-FILENAME = generate_filename() 
-CURRENCY_RATE = get_currency_rate("usd")
+
+STOP_CONDITION = Predicate.MAX_YEAR
+STOP_VALUE = 2019
 CONSUMER_THREADS = 1
 SCANNING_THREADS = 1
 PROFIT_THRESHOLD = 50 #irrelevant
 
+LOGIN, PASSWORD = get_credentials()
+FILENAME = generate_filename(val=STOP_VALUE) 
+CURRENCY_RATE = get_currency_rate("usd")
+
 def start_scanners(scanners: list):
     for i in range(SCANNING_THREADS):
         scanner = Scanner(
-            exit_pred=Predicate.MAX_YEAR,
-            exit_val=2024,
+            exit_pred=STOP_CONDITION,
+            exit_val=STOP_VALUE,
             step=SCANNING_THREADS,
             index=i+1,
             headless=False,

@@ -44,8 +44,13 @@ def results_to_excel(results: list, filename: str = "results.xlsx"):
         df.to_excel(filename, index=False)
         system(filename)
         
-def generate_filename() -> str:
+def generate_filename(**kwargs) -> str:
     from datetime import datetime
 
-    now = datetime.now()
-    return f"results_{now.strftime('%Y-%m-%d_%H-%M-%S')}.xlsx"
+    try:
+        val = kwargs['val']
+        now = datetime.now()
+        return f"results_{val}_{now.strftime('%Y-%m-%d_%H-%M-%S')}.xlsx"
+    except KeyError:
+        now = datetime.now()
+        return f"results_{now.strftime('%Y-%m-%d_%H-%M-%S')}.xlsx"

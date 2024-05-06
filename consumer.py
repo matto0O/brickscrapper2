@@ -74,7 +74,10 @@ class Consumer(Thread):
         while price < 0.3 * promoklocki_price and i < len(price_elements):
             best = price_elements[i]
             price_text = await best.text_content()
-            price = float(price_text.split(" ")[0].replace(",", "."))
+            try:
+                price = float(price_text.split(" ")[0].replace(",", "."))
+            except ValueError:
+                continue
             if price > promoklocki_price:
                 return "Drozsze niż promoklocki"
             # elem = await name_elements[i].query_selector('div/div/div[2]/div/a/h6')
