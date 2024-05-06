@@ -77,6 +77,7 @@ class Consumer(Thread):
             try:
                 price = float(price_text.split(" ")[0].replace(",", "."))
             except ValueError:
+                i += 1
                 continue
             if price > promoklocki_price:
                 return "Drozsze niż promoklocki"
@@ -91,14 +92,14 @@ class Consumer(Thread):
         async with async_playwright() as playwright:
             client = await playwright.chromium.launch(**self.kwargs)
             self.driver = await client.new_page()
-            await self._bricklink_login()
+            # await self._bricklink_login()
             await self._olx_cookies()
 
             while self.products:
                 product = self.products.pop()
                 name = product["name"]
                 price = float(product["price"])
-                year = product["year"]
+                # year = product["year"]
                 catalog_no = name.split(" - ")[0].split(" ")[-1]
 
                 # bricklink = f"https://www.bricklink.com/catalogPOV.asp?itemType=S&itemNo={catalog_no}&itemSeq=1&itemQty=1&breakType=M&itemCondition=N&incInstr=Y&incParts=Y"
