@@ -52,7 +52,8 @@ class Scanner(Thread):
     async def move_to_next(self):
         self.sites_visited += 1
         self.index += self.step
-        await self.driver.goto(self.site + "?p=" + str(self.index))
+        await self.driver.close()
+        sleep(1)
 
     async def scrape(self):
         products = await self.driver.query_selector_all('xpath=.//div[contains(@class, "product")]')
@@ -92,14 +93,15 @@ class Scanner(Thread):
         else:
             raise ValueError("Invalid predicate")
         
-        async with async_playwright() as playwright:
-            client = await playwright.chromium.launch(**self.kwargs)
-            self.driver = await client.new_page()
-            await self.driver.goto(self.site + "?p=" + str(self.index))
+        while not predicate():
+        
+            async with async_playwright() as playwright:
+                client = await playwright.chromium.launch(**self.kwargs)
+                self.driver = await client.new_page()
+                await self.driver.goto(self.site + "?p=" + str(self.index))
 
-            while not predicate():
                 await self.scrape()
-                await asyncio.sleep(3)
+                await asyncio.sleep(1)
                 await self.move_to_next()
 
     def run(self):
