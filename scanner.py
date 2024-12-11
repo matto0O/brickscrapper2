@@ -1,5 +1,5 @@
 from playwright.async_api import async_playwright
-from time import time
+from time import time, sleep
 from enum import Enum
 from threading import Thread
 import asyncio
@@ -61,13 +61,13 @@ class Scanner(Thread):
             link = await data.get_attribute("href")
             name = await data.get_attribute("title")
 
-            year = await product.query_selector("p")
+            year = await product.query_selector('xpath=.//span[contains(@class, "small")]')
             year = await year.text_content()
             year = year.split(",")[0].split(":")[1].strip()
 
-            strong = await product.query_selector("strong")
-            strong_text = await strong.text_content()
-            price = float(strong_text.replace(",", "."))
+            price = await product.query_selector('xpath=.//span[contains(@class, "price-browse")]')
+            price_edit = await price.text_content()
+            price = float(price_edit.replace(",", "."))
 
             self.results.append({"name": name, "link": link, "year": year, "price": price})
     
